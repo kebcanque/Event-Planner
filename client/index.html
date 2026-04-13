@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Planner Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calendar-alt"></i> Event Planner</h1>
+            <div id="stats" class="stats-container">
+                <div class="stat-card">
+                    <h3>Total Events</h3>
+                    <p id="total-events">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Upcoming This Week</h3>
+                    <p id="upcoming-events">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Remaining Slots</h3>
+                    <p id="remaining-slots">100</p>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="controls">
+                <div class="search-filter">
+                    <input type="text" id="search-input" placeholder="Search events...">
+                    <input type="text" id="location-filter" placeholder="Filter by location...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <button id="add-event-btn" class="btn-primary"><i class="fas fa-plus"></i> New Event</button>
+            </section>
+
+            <section class="event-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Budget</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="event-table-body">
+                        <!-- Events will be loaded here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- Modal for Add/Edit Event -->
+        <div id="event-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title">Create New Event</h2>
+                <form id="event-form">
+                    <input type="hidden" id="event-id">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description (Markdown supported)</label>
+                        <textarea id="description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_date">Date & Time</label>
+                        <input type="datetime-local" id="event_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location">
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget</label>
+                        <input type="number" id="budget" step="0.01">
+                    </div>
+                    <div class="form-group" id="status-group" style="display:none;">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="Tentative">Tentative</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">Save Event</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js" type="module"></script>
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
