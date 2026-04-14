@@ -8,5 +8,6 @@ router.post('/', eventController.createEvent);
 router.put('/:id', eventController.updateEvent);
 router.delete('/:id', eventController.deleteEvent);
 router.patch('/:id/archive', eventController.archiveEvent);
+router.patch('/:id/restore', eventController.restoreEvent);
 
 module.exports = router;

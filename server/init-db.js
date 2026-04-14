@@ -1,9 +1,14 @@
 const mysql = require('mysql2/promise');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 async function initializeDatabase() {
+    console.log('Connecting with:', {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: '***'
+    });
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,

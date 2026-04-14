@@ -1,0 +1,39 @@
+erDiagram
+    USERS ||--o{ EVENTS : "organizes"
+    EVENTS ||--o{ GUESTS : "has"
+    EVENTS ||--o{ TASKS : "contains"
+
+    USERS {
+        int user_id PK
+        string username
+        string email
+        string password_hash
+        timestamp created_at
+    }
+
+    EVENTS {
+        int event_id PK
+        int user_id FK
+        string title
+        text description
+        timestamp event_date
+        string location
+        decimal budget
+        timestamp created_at
+    }
+
+    GUESTS {
+        int guest_id PK
+        int event_id FK
+        string name
+        string emails
+        string rsvp_status
+    }
+
+    TASKS {
+        int task_id PK
+        int event_id FK
+        text task_description
+        date due_date
+        boolean is_completed
+    }

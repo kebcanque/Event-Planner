@@ -8,80 +8,130 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-calendar-alt"></i> Event Planner</h1>
-            <div id="stats" class="stats-container">
-                <div class="stat-card">
-                    <h3>Total Events</h3>
-                    <p id="total-events">0</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Upcoming This Week</h3>
-                    <p id="upcoming-events">0</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Remaining Slots</h3>
-                    <p id="remaining-slots">100</p>
-                </div>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-calendar-alt"></i> <span>Event Planner</span>
             </div>
-        </header>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i class="fas fa-chart-line"></i> <span>Dashboard Overview</span></a>
+                <a href="#" class="nav-item"><i class="fas fa-calendar-days"></i> <span>Events</span></a>
+                <a href="#" class="nav-item"><i class="fas fa-users"></i> <span>Guests</span></a>
+                <a href="#" class="nav-item" id="nav-tasks"><i class="fas fa-tasks"></i> <span>Tasks</span></a>
+                <a href="#" class="nav-item" id="nav-archives"><i class="fas fa-box-archive"></i> <span>Archives</span></a>
+            </nav>
+        </aside>
 
-        <main>
-            <section class="controls">
-                <div class="search-filter">
-                    <input type="text" id="search-input" placeholder="Search events...">
-                    <input type="text" id="location-filter" placeholder="Filter by location...">
-                    <button id="search-btn"><i class="fas fa-search"></i></button>
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button id="sidebar-toggle" class="icon-btn"><i class="fas fa-bars"></i></button>
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search events, guests, or tasks...">
+                    </div>
                 </div>
-                <button id="add-event-btn" class="btn-primary"><i class="fas fa-plus"></i> New Event</button>
-            </section>
+                <div class="header-right">
+                    <div class="user-profile" id="user-profile-menu">
+                        <img src="https://ui-avatars.com/api/?name=User&background=6c5ce7&color=fff" alt="Profile" id="user-avatar">
+                        <span id="user-display-name">Admin</span>
+                        <button id="logout-btn" title="Logout" style="background:none; border:none; cursor:pointer; color:var(--text-muted); margin-left:10px;"><i class="fas fa-sign-out-alt"></i></button>
+                    </div>
+                </div>
+            </header>
 
-            <section class="event-list">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Budget</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="event-table-body">
-                        <!-- Events will be loaded here -->
-                    </tbody>
-                </table>
+            <section class="content-area">
+                <div class="welcome-section">
+                    <h2>Dashboard Overview</h2>
+                    <p>Welcome back! Here's what's happening today.</p>
+                </div>
+
+                <div class="overview-cards">
+                    <div class="card stat-card">
+                        <div class="card-icon purple"><i class="fas fa-calendar-check"></i></div>
+                        <div class="card-info">
+                            <h3>Total Events</h3>
+                            <p id="total-events">0</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="card-icon blue"><i class="fas fa-clock"></i></div>
+                        <div class="card-info">
+                            <h3>Upcoming Events</h3>
+                            <p id="upcoming-events">0</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="card-icon orange"><i class="fas fa-list-check"></i></div>
+                        <div class="card-info">
+                            <h3>Pending Tasks</h3>
+                            <p id="remaining-slots">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="events-section">
+                    <div class="section-header">
+                        <h3 id="section-title">Upcoming Events</h3>
+                        <div class="header-actions">
+                            <input type="text" id="location-filter" placeholder="Filter by location..." class="small-input">
+                            <button id="add-event-btn" class="btn-primary"><i class="fas fa-plus"></i> New Event</button>
+                        </div>
+                    </div>
+                    
+                    <div class="event-list-container">
+                        <table class="modern-table">
+                            <thead id="table-head">
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date & Time</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Budget</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="event-table-body">
+                                <!-- Data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
         </main>
 
         <!-- Modal for Add/Edit Event -->
         <div id="event-modal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2 id="modal-title">Create New Event</h2>
+                <div class="modal-header">
+                    <h2 id="modal-title">Create New Event</h2>
+                    <span class="close" onclick="document.getElementById('event-modal').style.display='none'">&times;</span>
+                </div>
                 <form id="event-form">
                     <input type="hidden" id="event-id">
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input type="text" id="title" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" placeholder="Event title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event_date">Date & Time</label>
+                            <input type="datetime-local" id="event_date" required>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="description">Description (Markdown supported)</label>
-                        <textarea id="description" rows="4"></textarea>
+                        <textarea id="description" rows="3" placeholder="Describe your event..."></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="event_date">Date & Time</label>
-                        <input type="datetime-local" id="event_date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <input type="text" id="location">
-                    </div>
-                    <div class="form-group">
-                        <label for="budget">Budget</label>
-                        <input type="number" id="budget" step="0.01">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" placeholder="Where is it?">
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Budget</label>
+                            <input type="number" id="budget" step="0.01" placeholder="0.00">
+                        </div>
                     </div>
                     <div class="form-group" id="status-group" style="display:none;">
                         <label for="status">Status</label>
@@ -93,6 +143,75 @@
                     </div>
                     <button type="submit" class="btn-submit">Save Event</button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Modal for Guests -->
+        <div id="guest-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Manage Guests</h2>
+                    <span class="close" onclick="document.getElementById('guest-modal').style.display='none'">&times;</span>
+                </div>
+                <div id="guest-event-title" style="margin-bottom: 15px; font-weight: bold; color: var(--primary-color);"></div>
+                <form id="guest-form" style="margin-bottom: 20px;">
+                    <input type="hidden" id="guest-event-id">
+                    <div class="form-row">
+                        <input type="text" id="guest-name" placeholder="Guest Name" required>
+                        <input type="email" id="guest-emails" placeholder="Emails">
+                        <select id="guest-rsvp">
+                            <option value="Tentative">Tentative</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Declined">Declined</option>
+                        </select>
+                        <button type="submit" class="btn-primary">Add</button>
+                    </div>
+                </form>
+                <div class="list-container">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Emails</th>
+                                <th>RSVP</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guest-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Tasks -->
+        <div id="task-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Manage Tasks</h2>
+                    <span class="close" onclick="document.getElementById('task-modal').style.display='none'">&times;</span>
+                </div>
+                <div id="task-event-title" style="margin-bottom: 15px; font-weight: bold; color: var(--primary-color);"></div>
+                <form id="task-form" style="margin-bottom: 20px;">
+                    <input type="hidden" id="task-event-id">
+                    <div class="form-row">
+                        <input type="text" id="task-desc" placeholder="Task description" required style="flex: 2;">
+                        <input type="date" id="task-due">
+                        <button type="submit" class="btn-primary">Add</button>
+                    </div>
+                </form>
+                <div class="list-container">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="task-table-body"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
